@@ -1,0 +1,714 @@
+<html>
+<head>
+<title>ASE atomic visualization</title>
+<link rel="stylesheet" type="text/css"
+ href="https://www.x3dom.org/x3dom/release/x3dom.css">
+</link>
+<script type="text/javascript"
+ src="https://www.x3dom.org/x3dom/release/x3dom.js">
+</script>
+<style>
+* {
+    box-sizing: border-box;
+  }
+ 
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 1px;
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#x3dase{
+    top:0;
+    width: 80%;
+    height: 80%;
+    border:2px solid darkorange;        
+}
+
+#sidebar{
+    top:0;
+    border:2px solid darkorange;        
+}
+
+
+/* Sidebar component containers */
+.ui-widget-header
+{
+  background-color: lightblue;
+  font-size: 12px;
+
+}
+.sidebarComponent
+{
+    padding:2px 2px 2px 2px;
+    font-size: medium;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: 1px solid green;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  cursor: pointer;
+  /* float: left; */
+}
+
+</style></head>
+<body>
+<div class = "column left", id = "sidebar">
+
+    <div class="ui-widget-header">Model</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="spacefilling('f4703675')">Ball</button>
+            <button type="button" class = "button" onclick="ballstick('f4703675')">Ball-and-stick</button>
+            <button type="button" class = "button" onclick="polyhedra('f4703675')">Polyhedra</button>
+        </form>
+    </div>
+    <div class="ui-widget-header">Label</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="none('f4703675')">None</button>
+            <button type="button" class = "button" onclick="element('f4703675')"> Element</button>
+            <button type="button" class = "button" onclick="index('f4703675')">Index</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Camera</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="document.getElementById('camera_ortho_f4703675').setAttribute('set_bind','true');">Orthographic</button>
+            <button type="button" class = "button" onclick="document.getElementById('camera_persp_f4703675').setAttribute('set_bind','true');">Perspective</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">View</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="set_viewpoint('f4703675', 'top_pos', 'top_ori')">Top</button>
+            <button type="button" class = "button" onclick="set_viewpoint('f4703675', 'front_pos', 'front_ori')">Front</button>
+            <button type="button" class = "button" onclick="set_viewpoint('f4703675', 'right_pos', 'right_ori')">Right</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Measurement</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left; font-size: 12px;">
+            <table style="font-size:1.0em;">
+                <td id="lastonMouseoverObject_kind_f4703675">-</td> <td id="lastonMouseoverObject_index_f4703675">-</td> 
+                <td id="position_f4703675">-</td></tr>
+            </table>
+            <p id="measure_f4703675"></p>
+            <p id="error_f4703675"></p>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    document.onkeyup = function(e) {
+      var x = event.which || event.keyCode;
+      var label = 0;
+        if (x == 49) {
+            set_viewpoint('f4703675', 'top_pos', 'top_ori');
+        } else if (x == 50) {
+            set_viewpoint('f4703675', 'front_pos', 'front_ori');
+        } else if (x == 51) {
+            set_viewpoint('f4703675', 'right_pos', 'right_ori');
+        } else if (x == 83) {
+          spacefilling('f4703675');
+        } else if (x == 66) {
+          ballstick('f4703675');
+        } else if (x == 80) {
+          polyhedra('f4703675');
+        } else if (x == 52) {
+            element('f4703675');
+        } else if (x == 53) {
+            index('f4703675');
+        } else if (x == 54) {
+            none('f4703675');
+        }
+      };
+    </script>
+ <div class = "column right" > 
+   <X3D id = "x3dase" PrimitiveQuality = "high" > 
+     <Scene > 
+       <Transform id = "t_camera_persp_f4703675" rotation = "0 0 0 0" > 
+         <Viewpoint id = "camera_persp_f4703675" position = "-9.973753746741059e-06 -3.457202535572866e-06 7.0581104704904645" centerOfRotation = "-9.973753746741059e-06 -3.457202535572866e-06 1.0500490463811687e-05" orientation = "0 0 0 0" description = "camera" > 
+         </Viewpoint> 
+       </Transform> 
+       <Transform id = "t_camera_ortho_f4703675" rotation = "0 0 0 0" > 
+         <OrthoViewpoint id = "camera_ortho_f4703675" position = "-9.973753746741059e-06 -3.457202535572866e-06 7.0581104704904645" centerOfRotation = "-9.973753746741059e-06 -3.457202535572866e-06 1.0500490463811687e-05" orientation = "0 0 0 0" fieldOfView = "-2.35269999 -2.35269999 2.35269999 2.35269999" description = "camera" > 
+         </OrthoViewpoint> 
+       </Transform> 
+       <Group onclick = "handleGroupClick(event, 'f4703675')" > 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_C" id = "as_C_f4703675" > 
+             <Appearance DEF = "app_C" > 
+               <Material name = "am_f4703675" diffuseColor = "0.565 0.565 0.565" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_C" radius = "0.76" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_0_f4703675" uuid = "f4703675" id = "at_0_f4703675" radius = "0.76" name = "at_f4703675" translation = "-0.06 0.03 0.03" scale = "1 1 1" > 
+           <Shape kind = "C" index = "0" uuid = "f4703675" > 
+             <Appearance USE = "app_C" > 
+             </Appearance> 
+             <Sphere USE = "asp_C" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_4_f4703675" uuid = "f4703675" id = "at_4_f4703675" radius = "0.76" name = "at_f4703675" translation = "-0.18 -0.38 2.28" scale = "1 1 1" > 
+           <Shape kind = "C" index = "4" uuid = "f4703675" > 
+             <Appearance USE = "app_C" > 
+             </Appearance> 
+             <Sphere USE = "asp_C" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_5_f4703675" uuid = "f4703675" id = "at_5_f4703675" radius = "0.76" name = "at_f4703675" translation = "0.12 0.31 -2.19" scale = "1 1 1" > 
+           <Shape kind = "C" index = "5" uuid = "f4703675" > 
+             <Appearance USE = "app_C" > 
+             </Appearance> 
+             <Sphere USE = "asp_C" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_O" id = "as_O_f4703675" > 
+             <Appearance DEF = "app_O" > 
+               <Material name = "am_f4703675" diffuseColor = "1.0 0.051 0.051" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_O" radius = "0.66" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_1_f4703675" uuid = "f4703675" id = "at_1_f4703675" radius = "0.66" name = "at_f4703675" translation = "-1.1 -0.56 -0.33" scale = "1 1 1" > 
+           <Shape kind = "O" index = "1" uuid = "f4703675" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_2_f4703675" uuid = "f4703675" id = "at_2_f4703675" radius = "0.66" name = "at_f4703675" translation = "0.59 0.04 1.17" scale = "1 1 1" > 
+           <Shape kind = "O" index = "2" uuid = "f4703675" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_3_f4703675" uuid = "f4703675" id = "at_3_f4703675" radius = "0.66" name = "at_f4703675" translation = "0.71 0.58 -0.93" scale = "1 1 1" > 
+           <Shape kind = "O" index = "3" uuid = "f4703675" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_H" id = "as_H_f4703675" > 
+             <Appearance DEF = "app_H" > 
+               <Material name = "am_f4703675" diffuseColor = "1.0 1.0 1.0" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_H" radius = "0.31" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_6_f4703675" uuid = "f4703675" id = "at_6_f4703675" radius = "0.31" name = "at_f4703675" translation = "0.5 -0.53 3.16" scale = "1 1 1" > 
+           <Shape kind = "H" index = "6" uuid = "f4703675" > 
+             <Appearance USE = "app_H" > 
+             </Appearance> 
+             <Sphere USE = "asp_H" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_7_f4703675" uuid = "f4703675" id = "at_7_f4703675" radius = "0.31" name = "at_f4703675" translation = "-0.99 0.37 2.57" scale = "1 1 1" > 
+           <Shape kind = "H" index = "7" uuid = "f4703675" > 
+             <Appearance USE = "app_H" > 
+             </Appearance> 
+             <Sphere USE = "asp_H" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_8_f4703675" uuid = "f4703675" id = "at_8_f4703675" radius = "0.31" name = "at_f4703675" translation = "-0.8 -1.2 1.94" scale = "1 1 1" > 
+           <Shape kind = "H" index = "8" uuid = "f4703675" > 
+             <Appearance USE = "app_H" > 
+             </Appearance> 
+             <Sphere USE = "asp_H" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_9_f4703675" uuid = "f4703675" id = "at_9_f4703675" radius = "0.31" name = "at_f4703675" translation = "0.82 0.39 -3.04" scale = "1 1 1" > 
+           <Shape kind = "H" index = "9" uuid = "f4703675" > 
+             <Appearance USE = "app_H" > 
+             </Appearance> 
+             <Sphere USE = "asp_H" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_10_f4703675" uuid = "f4703675" id = "at_10_f4703675" radius = "0.31" name = "at_f4703675" translation = "-0.52 -0.63 -2.23" scale = "1 1 1" > 
+           <Shape kind = "H" index = "10" uuid = "f4703675" > 
+             <Appearance USE = "app_H" > 
+             </Appearance> 
+             <Sphere USE = "asp_H" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_11_f4703675" uuid = "f4703675" id = "at_11_f4703675" radius = "0.31" name = "at_f4703675" translation = "-0.68 1.16 -2.35" scale = "1 1 1" > 
+           <Shape kind = "H" index = "11" uuid = "f4703675" > 
+             <Appearance USE = "app_H" > 
+             </Appearance> 
+             <Sphere USE = "asp_H" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Group> 
+       <Switch id = "switch_marker_0_f4703675" whichChoice = "-1" > 
+         <Transform id = "marker_0_f4703675" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_1_f4703675" whichChoice = "-1" > 
+         <Transform id = "marker_1_f4703675" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_2_f4703675" whichChoice = "-1" > 
+         <Transform id = "marker_2_f4703675" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_3_f4703675" whichChoice = "-1" > 
+         <Transform id = "marker_3_f4703675" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_4_f4703675" whichChoice = "-1" > 
+         <Transform id = "marker_4_f4703675" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_line_0_f4703675" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_0_f4703675" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_0_f4703675" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+       <Switch id = "switch_line_1_f4703675" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_1_f4703675" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_1_f4703675" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+       <TimeSensor DEF = "time" cycleInterval = "21" loop = "true" > 
+       </TimeSensor> 
+       <PositionInterpolator DEF = "move_0" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "-0.0635492 0.02615914 0.03273994 -0.09305773 -0.02864133 -0.01143952 -0.04192279 -0.0464343 -0.04863332 -0.12290839 -0.06913319 0.02226412 -0.16603921 0.0349759 0.01269891 -0.19197596 0.00437278 -0.00621081 -0.18533716 -0.163891 0.04270852 -0.19184506 -0.22456643 -0.0066334 -0.1794111 -0.13094957 -0.04986589 -0.1940066 -0.06417092 0.04022124 -0.16496628 -0.13320401 0.03285987 -0.16174437 -0.21833111 -0.0442355 -0.15008382 -0.23074713 0.00614423 -0.11782626 -0.15881162 0.04482525 -0.08692892 -0.00452236 -0.02917345 -0.02470971 -0.0306413 0.01784812 -0.03582282 -0.10831124 -0.01356033 -0.11275479 -0.11668302 -0.01677292 -0.13042869 0.01422992 0.08279131 -0.09173459 0.09694626 0.09774456 -0.1459889 0.2010318 0.07903917 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_0" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_0" fromField = "value_changed" toNode = "at_0_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_1" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "-1.09745824 -0.56171083 -0.33384407 -1.12391545 -0.51541528 -0.23781467 -1.18300958 -0.5063677 -0.11563231 -1.2102518 -0.51582457 -0.02811583 -1.2365279 -0.55183087 0.01784526 -1.24588129 -0.53137936 0.03558609 -1.35664399 -0.51285359 0.03181305 -1.34036796 -0.50955553 0.03402695 -1.3074504 -0.56519974 0.03071795 -1.26983795 -0.59584617 0.01174043 -1.29284847 -0.54365366 0.00895818 -1.34173203 -0.41668848 0.04279114 -1.3447699 -0.2924472 0.12471198 -1.29161617 -0.16907657 0.22735983 -1.25164362 -0.02739433 0.3091587 -1.19150443 0.16091032 0.36475171 -1.06533094 0.36597283 0.41762653 -0.95983867 0.61908433 0.47500015 -0.89271491 0.78280023 0.56234192 -0.84482916 0.89926726 0.67774274 -0.7293677 0.92103788 0.76887343 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_1" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_1" fromField = "value_changed" toNode = "at_1_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_2" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "0.59339279 0.04178514 1.16893291 0.55618229 0.07436861 1.17816919 0.50468916 0.13292914 1.14875269 0.52820783 0.22150529 1.15116597 0.55312906 0.21843516 1.13733405 0.5964863 0.1967908 1.05504897 0.65905957 0.18436004 1.0060104 0.63901835 0.08826915 1.01302482 0.64762229 -0.07953742 1.0260135 0.71402289 -0.2155107 1.03742041 0.74380879 -0.28829379 0.98194466 0.84887617 -0.33883006 0.89494162 0.91996086 -0.41212468 0.83858536 0.8526949 -0.55522912 0.7566767 0.83576829 -0.72115398 0.72344361 0.73467763 -0.85017386 0.77628515 0.65016159 -0.93842188 0.79001307 0.66615622 -1.02259879 0.67436514 0.63426201 -1.00858443 0.59461407 0.57155119 -0.92199336 0.53711321 0.5776932 -0.87929648 0.48138673 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_2" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_2" fromField = "value_changed" toNode = "at_2_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_3" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "0.70731479 0.58054012 -0.92796504 0.68610294 0.52783586 -0.95649668 0.7037049 0.45558792 -0.96981975 0.69223531 0.37040944 -1.04094399 0.62538661 0.27084563 -1.0527476 0.58004596 0.23821594 -1.00634209 0.57667136 0.2898859 -1.03182738 0.51770774 0.31231779 -1.0376986 0.45335313 0.32896132 -1.07446064 0.46083618 0.35955453 -1.14451795 0.44702077 0.3965392 -1.08502187 0.43585986 0.4080345 -1.0183375 0.4303944 0.39378383 -1.02521851 0.44689656 0.37939956 -1.08634252 0.47036731 0.36250903 -1.11281418 0.48667265 0.32648775 -1.24742252 0.38895098 0.29761781 -1.25921333 0.27699152 0.25546285 -1.21655608 0.15656107 0.09985852 -1.28812464 -0.01658762 -0.02063172 -1.26364335 -0.17935879 -0.08041392 -1.18734858 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_3" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_3" fromField = "value_changed" toNode = "at_3_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_4" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "-0.18480919 -0.38314587 2.27627182 -0.16447022 -0.40593649 2.28099733 -0.10616896 -0.418253 2.33600998 -0.09851514 -0.44414546 2.34070579 0.01538264 -0.38690296 2.25432756 0.09861316 -0.31695344 2.26561108 0.16725051 -0.26059128 2.2711251 0.37941238 -0.1671411 2.39786959 0.44700043 -0.06594401 2.47946421 0.46621814 -0.01915614 2.41740148 0.57596023 -0.02133624 2.42643302 0.61740382 -0.04365475 2.30921119 0.5616744 -0.1424376 2.17362767 0.57831725 -0.21343991 2.10967559 0.57932945 -0.36117879 2.16774289 0.60048679 -0.53566409 2.16907061 0.72079785 -0.66132635 2.14125706 0.75261005 -0.84723239 2.14323178 0.82872858 -1.01812815 2.03204533 0.97832879 -1.12617607 1.88580678 1.05092063 -1.22417241 1.81917511 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_4" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_4" fromField = "value_changed" toNode = "at_4_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_5" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "0.1179048 0.31317315 -2.1890521 0.15311621 0.36974651 -2.24471897 0.1927822 0.37855482 -2.35586286 0.20201036 0.44344609 -2.42102408 0.23307399 0.45404046 -2.38789873 0.16583466 0.44966701 -2.33543335 0.08726707 0.46935795 -2.3346155 0.04204675 0.46501865 -2.40818171 -0.0877719 0.49166768 -2.41082379 -0.2367214 0.52965937 -2.37700754 -0.31371164 0.59747476 -2.31336703 -0.36777375 0.57007284 -2.23392452 -0.43507028 0.64810788 -2.12020637 -0.45262834 0.69754784 -2.03254582 -0.54015672 0.73777293 -2.09993408 -0.58655198 0.89921649 -2.0716102 -0.63262791 0.97454667 -2.09852966 -0.6454023 1.02733056 -2.08152662 -0.62701882 1.09429816 -1.95014163 -0.59818492 1.06656398 -1.9301044 -0.58992672 1.04331904 -1.94774993 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_5" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_5" fromField = "value_changed" toNode = "at_5_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_6" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "0.50081283 -0.52887988 3.16355896 0.61101343 -0.53578554 3.05557668 0.59441112 -0.37251733 3.12154882 0.58534846 -0.3078438 3.10481579 0.59530823 -0.15971221 3.03911314 0.74162747 0.11423197 3.00025152 1.00470739 0.0420896 3.05225081 1.05769728 0.59555131 2.99348145 1.40265206 0.52884891 2.86578519 1.52906376 0.5364753 2.59447328 1.37161053 0.7045719 2.79905745 1.35555025 0.55963587 2.77998452 1.21386884 0.62629826 2.31486118 1.16252317 0.60099496 2.49038663 1.02795171 0.67098298 2.26663974 1.03390163 0.58302523 2.24904192 0.82777877 0.50705554 2.36137289 0.87801107 0.29750491 2.38936009 0.71114557 0.0360825 2.45330447 0.42812882 -0.37390498 2.43029763 0.47071525 -0.83424663 2.62713384 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_6" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_6" fromField = "value_changed" toNode = "at_6_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_7" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "-0.99130619 0.37122315 2.57026887 -0.92056721 0.37995534 2.54116185 -1.07548481 0.02741362 2.65941639 -0.96029128 0.1197713 2.54135044 -0.90074783 0.107927 2.46357482 -0.92339706 -0.05523844 2.41049107 -0.74060904 0.23809129 2.52904332 -0.74885681 0.13310826 2.57278352 -0.56799682 0.54556931 2.65296881 -0.2713317 0.42625935 3.06186717 -0.3967427 0.5200649 2.38523061 -0.49366611 0.20697742 2.36796547 -0.34285953 0.28329493 2.55404723 -0.51281701 -0.10290575 1.99883247 -0.48022828 -0.48580326 2.48979305 -0.33359151 -0.49700715 2.60931206 -0.18091664 -0.89961175 2.59194198 -0.06450562 -1.25771655 2.55944194 0.14025472 -1.65141838 2.58291379 0.64644918 -2.20487229 2.40233247 0.89490605 -2.4943543 1.59600197 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_7" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_7" fromField = "value_changed" toNode = "at_7_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_8" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "-0.7989822 -1.19689691 1.93909299 -0.54480146 -1.37246017 2.12573783 -0.53750046 -1.37542092 2.06572914 -0.19203573 -1.5214716 2.05218852 -0.14268959 -1.56058605 2.31313806 -0.09691816 -1.49466763 2.05186465 0.47494153 -1.33529639 2.53781903 0.13552322 -1.18023323 2.56801117 0.62662052 -1.01096275 2.81625606 0.59996441 -0.89956239 2.96213663 0.60030582 -1.05625986 2.72553638 0.54945227 -0.97474697 3.12247794 0.78629408 -1.16667302 2.75877556 1.03569564 -1.06976579 2.72516694 0.98584098 -1.08679849 2.85690081 1.35989437 -1.02082501 2.54864397 1.36599471 -1.25761648 2.58173078 1.67722541 -1.38386374 2.47405238 1.96241921 -1.25289215 2.14246713 2.12926172 -1.1648717 2.01233196 2.02412419 -0.6967409 1.74909137 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_8" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_8" fromField = "value_changed" toNode = "at_8_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_9" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "0.82173383 0.39293513 -3.04121518 1.01327055 0.36615477 -2.99423065 1.08076112 0.62688231 -2.99574886 1.05131428 0.46065194 -3.1535838 1.13187532 0.50731789 -2.91704798 1.0468607 0.40390035 -2.89264338 0.90593245 0.14728364 -2.92507033 0.6705427 0.07374557 -3.1922481 0.4398392 -0.03255774 -3.19418526 0.36541814 -0.24836267 -2.90185803 -0.16300918 -0.23927506 -3.10620203 -0.40130587 -0.34714085 -2.81741963 -0.44831798 -0.29706433 -2.69573182 -0.81731423 -0.23716006 -2.56232719 -1.0985128 -0.18032952 -2.48683649 -1.32483003 0.06074541 -2.33016628 -1.49728923 0.29769022 -2.04536462 -1.68433337 0.90936699 -1.87009799 -1.66821631 1.00125226 -1.88155445 -1.64556234 1.02540221 -1.62301888 -1.47838858 1.5152264 -1.452272 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_9" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_9" fromField = "value_changed" toNode = "at_9_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_10" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "-0.51975018 -0.63449883 -2.23208618 -0.23230545 -0.67476687 -2.26442718 -0.47942258 -0.4670302 -2.5479898 -0.17695086 -0.54701445 -2.69337892 -0.53330097 -0.3127257 -2.64461435 -0.58572572 -0.27631397 -2.68278508 -0.7276244 -0.17940681 -2.63371091 -0.93272196 -0.00230013 -2.33949697 -1.10158248 0.19467619 -2.55295932 -1.2604379 0.53288723 -2.36349455 -1.33291837 0.37238838 -2.02827018 -1.4071187 0.90375922 -1.88913865 -1.48947628 0.9282133 -1.72141667 -1.47106854 1.09924172 -1.73784446 -1.01297267 1.483946 -1.43919278 -1.32026124 1.61080417 -1.73341074 -0.82981386 2.03739312 -1.75644146 -0.47927539 2.0159416 -1.64576023 -0.34043369 2.1259412 -1.82578632 -0.10351504 2.00874534 -1.72449998 0.13715996 1.74228355 -1.64313607 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_10" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_10" fromField = "value_changed" toNode = "at_10_f4703675" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_11" key = " 0.0 0.047619047619047616 0.09523809523809523 0.14285714285714285 0.19047619047619047 0.23809523809523808 0.2857142857142857 0.3333333333333333 0.38095238095238093 0.42857142857142855 0.47619047619047616 0.5238095238095238 0.5714285714285714 0.6190476190476191 0.6666666666666666 0.7142857142857143 0.7619047619047619 0.8095238095238095 0.8571428571428571 0.9047619047619048 0.9523809523809523" keyValue = "-0.68493521 1.15580308 -2.35394812 -0.6306651 1.24257911 -2.46805384 -0.63074664 1.22535023 -2.52228435 -0.36484269 1.39635649 -2.45901401 -0.37731332 1.28438295 -2.49248888 -0.11892361 1.45280071 -2.34912275 -0.11232855 1.46973339 -2.49531824 -0.15433706 1.48218467 -2.65389493 0.14850367 1.55768028 -2.53857779 -0.06106866 1.67002433 -2.77009295 0.1145764 1.47092594 -2.93873306 -0.04009713 1.58752105 -2.61371052 0.12916819 1.31037838 -2.82829598 0.0110788 1.2840513 -2.76937882 -0.03506836 1.31174418 -2.7503341 -0.06757239 1.01817789 -2.99595365 -0.20277246 1.12434624 -3.12377772 -0.27064322 1.025019 -3.16440569 -0.34209243 0.65261017 -3.02791632 -0.58917034 0.86931749 -3.04800579 -0.72093648 0.98722583 -3.00926099 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_11" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_11" fromField = "value_changed" toNode = "at_11_f4703675" toField = "translation" > 
+       </ROUTE> 
+     </Scene> 
+   </X3D> 
+ </div> 
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.min.js" ></script>
+ <script >
+ if (atoms_dict == undefined) {var atoms_dict = {"new": true};}; 
+atoms_dict["f4703675"] = {com: "-0.00 -0.00 0.00", 
+top_pos: "-0.00 -0.00 7.06", 
+front_pos: "-0.00 -7.06 0.00", 
+right_pos: "7.06 -0.00 0.00", 
+left_pos: "-7.06 -0.00 0.00", 
+top_ori: "0 0 0 0", 
+front_ori: "1 0 0 1.57079", 
+right_ori: "0 1 0 1.57079", 
+left_ori: "0 1 0 -1.57079", 
+select: [], 
+uuid: "f4703675", 
+label: "False", 
+bond: "False", 
+polyhedra: {}, 
+};
+
+// if (atoms_dict[uuid]['new']){
+function setQuality(uuid, quality){
+        // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+        var x3d = 'x3dase_' + uuid;
+        document.getElementById(x3d).setAttribute('PrimitiveQuality', quality);
+    }
+function set_viewpoint(uuid, pos, ori){
+    // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+    var persp = 'camera_persp_' + uuid;
+    var ortho = 'camera_ortho_' + uuid;
+    document.getElementById(persp).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(persp).setAttribute('position', atoms_dict[uuid][pos]);
+    document.getElementById(ortho).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(ortho).setAttribute('position', atoms_dict[uuid][pos]);
+}
+
+//Round a float value to x.xx format
+function roundWithTwoDecimals(value)
+{
+    var x = (Math.round(value * 100)) / 100;
+    var y = x.toFixed(2);
+    return y;
+}
+//Handle click on any group member
+function handleGroupClick(event)
+{
+    //Mark hitting point
+    var target = event.target;
+    var uuid = target.parentNode.getAttribute('uuid')
+    var radius = target.parentNode.getAttribute('radius');
+    var scale = target.parentNode.getAttribute('scale');
+    scale = parseFloat(radius)*parseFloat(scale)*1.2;
+    var scale = ' ' + scale + ' ' + scale + ' ' + scale;
+    var translation = target.parentNode.getAttribute('translation');
+    var id = target.parentNode.getAttribute('id');
+    if (window.event.ctrlKey) {
+        atoms_dict[uuid]['select'].push(id);
+
+    }
+    else {
+        for (var i=1; i<= atoms_dict[uuid]['select'].length; i++) {
+            $('#switch_marker_' + i + '_' + uuid).attr('whichChoice', -1);
+        }
+        atoms_dict[uuid]['select'] = [];
+        atoms_dict[uuid]['select'].push(id);
+        $('#switch_marker_' + 2 + '_' + uuid).attr('whichChoice', -1);
+}
+    var n = atoms_dict[uuid]['select'].length;
+    $('#switch_marker_' + n + '_' + uuid).attr('whichChoice', 0);
+    $('#marker_' + n + '_' + uuid).attr('translation', translation);
+    $('#marker_' + n + '_' + uuid).attr('scale', scale);
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat(uuid);
+    var atom_index = '#lastonMouseoverObject_index_'.concat(uuid);
+    $(atom_kind).html(target.getAttribute("kind"));
+    $(atom_index).html(target.getAttribute("index"));
+    //
+    var coord = translation.split(" ")
+    var atom_position = '#position_'.concat(uuid);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+
+    if (atoms_dict[uuid]['select'].length == 2){
+        calculate_distance(uuid);
+        draw_line(uuid);
+    }
+    else if (atoms_dict[uuid]['select'].length == 3){
+        calculate_angle(uuid);
+        draw_line(uuid);
+    }
+
+    console.log(event);
+}
+//Add a onMouseover callback to every shape
+$(document).ready(function(){
+    $("shape").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_shape(this)");
+        // $(this).attr("onclick", "handleClick_shape(this)");
+    });
+    //Add a onMouseover callback to every transform
+    $("transform").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_transform(this)");
+        // $(this).attr("onclick", "handleClick_transform(this)");
+    });
+});
+$(document).on("click", function(e) {
+    if (e.target === document || e.target.tagName === "BODY" || e.target.tagName === "HTML") {
+        $('#marker').attr('scale', "0.0001 0.0001 0.0001");
+    }
+});
+//Handle onMouseover on a shape
+function handleOnMouseover_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a shape
+function handleClick_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a transform
+function handleOnMouseover_transform(transform)
+{
+    var atom_position = '#position_'.concat($(transform).attr("uuid"));
+    var coord = $(transform).attr("translation").split(" "[0]);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+}
+
+function calculate_distance(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    r = (c1[0] - c2[0])*(c1[0] - c2[0]) + (c1[1] - c2[1])*(c1[1] - c2[1]) + (c1[2] - c2[2])*(c1[2] - c2[2]);
+    r = roundWithTwoDecimals(Math.sqrt(r));
+    var dist = 'Distance:  ' + r;
+    $(measure).html(dist);
+}
+function calculate_angle(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    var c3 = document.getElementById(atoms_dict[uuid]['select'][2]).getAttribute("translation").split(" ");
+    var AB = Math.sqrt(Math.pow(c2[0]-c1[0],2)+ Math.pow(c2[1]-c1[1],2) + Math.pow(c2[2]-c1[2],2));    
+    var BC = Math.sqrt(Math.pow(c2[0]-c3[0],2)+ Math.pow(c2[1]-c3[1],2) + Math.pow(c2[2]-c3[2],2)); 
+    var AC = Math.sqrt(Math.pow(c3[0]-c1[0],2)+ Math.pow(c3[1]-c1[1],2)+ Math.pow(c3[2]-c1[2],2));
+    var angle = roundWithTwoDecimals(Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB))*180/3.1415926);
+    var angle = 'angle:  ' + angle;
+    $(measure).html(angle);
+}
+function draw_line(uuid)
+{
+    var n = atoms_dict[uuid]['select'].length;
+    var coordIndex = '';
+    var point = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation");
+    for (var i = 1; i < n; i++) {
+        var c1 = document.getElementById(atoms_dict[uuid]['select'][i]).getAttribute("translation");
+        coordIndex = coordIndex + (i-1) + ' ' + i + ' -1 ';
+        point = point + ' ' + c1 + ' ';
+    }
+    $('#line_coor_' + 0 + '_' + uuid).attr('point', point);
+    $('#line_ind_' + 0 + '_' + uuid).attr('coordIndex', coordIndex);
+    $('#switch_line_' + 0 + '_' + uuid).attr('whichChoice', 0);
+}
+//Handle models
+function spacefilling(uuid)
+{
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "1.0, 1.0, 1.0");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function ballstick(uuid)
+{
+    if (atoms_dict[uuid]['bond']=='False'){ 
+        alert('Please set bond parameter in your code, e.g. bond=1.0!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set bond parameter in your code, e.g. bond=1.0!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function polyhedra(uuid)
+{
+    if (atoms_dict[uuid]['polyhedra'].length==0){ 
+        alert('Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '0');
+}
+function none(uuid)
+{
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.0");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+        
+function element(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show element, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show element, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function index(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show index, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show index, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+// } 
+</script> </body>
+</html>
